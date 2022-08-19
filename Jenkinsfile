@@ -14,18 +14,18 @@ node{
 	    }
     
     stage('build-image'){
-        sh 'docker build -t blackbilla/myweb:1.5 .'
+        sh 'docker build -t blackbilla/myweb1:1.5 .'
     }
     
     stage('push-image'){
         withCredentials([string(credentialsId: 'dockerpass', variable: 'DocHubPass')]) {
             sh "docker login -u blackbilla -p ${DocHubPass}"
             }
-        sh 'docker push blackbilla/myweb:1.5'   
+        sh 'docker push blackbilla/myweb1:1.5'   
     }
    stage('Nexus Image Push'){
    sh "docker login -u admin -p admin123 3.109.208.40:8083"
-   sh "docker tag blackbilla/myweb:1.5 3.109.208.40:8083/damo:1.0.0"
+   sh "docker tag blackbilla/myweb1:1.5 3.109.208.40:8083/damo:1.0.0"
    sh 'docker push 3.109.208.40:8083/damo:1.0.0'
    }
     stage('Remove Previous Container'){
@@ -36,7 +36,7 @@ node{
 	}
      
     stage('deploy-image'){
-        sh 'docker run -p 9090:8080 -d --name test blackbilla/myweb:1.5'
+        sh 'docker run -p 9090:8080 -d --name test blackbilla/myweb1:1.5'
     }
 }
 }
